@@ -38,14 +38,8 @@ public class MapReduce {
 	final SyndFeed feed = input.build(new XmlReader(feedSource));
 	final String string = "chicago";
 
-	final int ocurrences = feed.getEntries().stream().map(entry -> checkIfStringPresentInTitle(entry, string)) // returns
-														   // 1
-														   // if
-														   // String
-														   // is
-														   // present;
-														   // 0
-														   // otherwise
+	final int ocurrences = feed.getEntries().stream()
+		.map(entry -> checkIfStringPresentInTitle(entry, string))
 		.reduce(0, (a, b) -> a + b); // adds all values
 
 	System.out.printf("Total news with %s in the title is %d", string, ocurrences);
