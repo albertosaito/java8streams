@@ -52,7 +52,7 @@ public class NewsTextContentRxJava {
 	final Observable<SyndEntry> obs = Observable.from(feed.getEntries());
 	// Apply flatMap operation to the observable
 	obs.flatMap(entry -> {
-	        // defer the execution of obtaining the URL text with JSoup API
+	        // defer the execution of obtaining the URL text with JSoup
 		return Observable.defer(() -> {
 		    try {
 			return Observable.just(getNewsContentText(entry));
@@ -60,13 +60,8 @@ public class NewsTextContentRxJava {
 		    catch (final Exception e) {
 			return null;
 		    }
-		    // Use a separate thread for each URL
 		}).subscribeOn(Schedulers.newThread());
-	})
-	// Create a blocking observable
-	.toBlocking()
-	// For each processed URL -> print it out to the console
-	.forEach((text) -> {
+	}).toBlocking().forEach((text) -> {
 	   System.out.printf("%s : %s\n", Thread.currentThread().getName(), text);
 	});
 
